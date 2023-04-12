@@ -3,11 +3,12 @@
     <!-- Unique identifier of the plugin. It should be FQN. It cannot be changed between the plugin versions. -->
     <id>com.nus.CompoundInterestCalculator</id>
 
-    <idea-version since-build="211.0" until-build="211.*"/>
+    <idea-version since-build="211.0" until-build="222.*"/>
 
     <!-- Public plugin name should be written in Title Case.
          Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-name -->
-    <name>CompoundInterestCalculator</name>
+    <name>Compound Interest Calculator</name>
+    <version>1.0.0</version>
 
     <!-- A displayed Vendor name or Organization ID displayed on the Plugins Page. -->
     <vendor email="cliftonkor@gmail.com" url="https://www.nus.edu.sg">NUS</vendor>
