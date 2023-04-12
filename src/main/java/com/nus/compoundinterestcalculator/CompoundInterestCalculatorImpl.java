@@ -2,12 +2,11 @@ package com.nus.compoundinterestcalculator;
 
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.ComboBox;
+import com.intellij.util.ui.JBUI;
 import groovy.util.logging.Slf4j;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 @Slf4j
 public class CompoundInterestCalculatorImpl implements CompoundInterestCalculator {
@@ -18,7 +17,7 @@ public class CompoundInterestCalculatorImpl implements CompoundInterestCalculato
         JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.insets = new Insets(4, 4, 4, 4);
+        gbc.insets = JBUI.insets(4);
 
         JLabel principalLabel = new JLabel("Principal:");
         JTextField principalField = new JTextField(10);
@@ -63,12 +62,12 @@ public class CompoundInterestCalculatorImpl implements CompoundInterestCalculato
         gbc.gridx = 1;
         panel.add(resultField, gbc);
 
-        // Create the "Calculate" and "Cancel" buttons.
+        // Create the "Calculate" and "Close" buttons.
         JButton calculateButton = new JButton("Calculate");
-        JButton cancelButton = new JButton("Cancel");
+        JButton closeButton = new JButton("Close");
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         buttonPanel.add(calculateButton);
-        buttonPanel.add(cancelButton);
+        buttonPanel.add(closeButton);
 
         // Add the button panel to the main panel.
         gbc.gridx = 0;
@@ -83,32 +82,24 @@ public class CompoundInterestCalculatorImpl implements CompoundInterestCalculato
         dialog.getContentPane().add(panel);
 
         // Attach a listener to the "Calculate" button.
-        calculateButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    // Parse the input values from the text fields.
-                    double principal = Double.parseDouble(principalField.getText());
-                    double rate = Double.parseDouble(rateField.getText());
-                    int years = Integer.parseInt(yearsField.getText());
-                    int compoundingPeriod = compoundingBox.getSelectedIndex() + 1;
+        calculateButton.addActionListener(e -> {
+            try {
+                // Parse the input values from the text fields.
+                double principal = Double.parseDouble(principalField.getText());
+                double rate = Double.parseDouble(rateField.getText());
+                int years = Integer.parseInt(yearsField.getText());
+                int compoundingPeriod = compoundingBox.getSelectedIndex() + 1;
 
-                    // Calculate the compound interest and display the result.
-                    double result = calculateCompoundInterest(principal, rate, years, compoundingPeriod);
-                    resultField.setText(String.format("%.2f", result));
-                } catch (NumberFormatException ex) {
-                    JOptionPane.showMessageDialog(panel, "Invalid input.", "Error", JOptionPane.ERROR_MESSAGE);
-                }
+                // Calculate the compound interest and display the result.
+                double result = calculateCompoundInterest(principal, rate, years, compoundingPeriod);
+                resultField.setText(String.format("%.2f", result));
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(panel, "Invalid input.", "Error", JOptionPane.ERROR_MESSAGE);
             }
         });
 
         // Attach a listener to the "Cancel" button.
-        cancelButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                dialog.dispose();
-            }
-        });
+        closeButton.addActionListener(e -> dialog.dispose());
 
         // Show the calculator dialog.
         dialog.pack();
@@ -143,8 +134,10 @@ public class CompoundInterestCalculatorImpl implements CompoundInterestCalculato
                 break;
         }
 
-        double t = years;
-        double A = principal * Math.pow(1 + rate / n, n * t);
+        double t;
+        t = years;
+        double A;
+        A = principal * Math.pow(1 + rate / n, n * t);
         return A;
     }
 }
